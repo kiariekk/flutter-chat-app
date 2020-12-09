@@ -1,7 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/core/services/auth_service.dart';
 import 'package:flutter_chat_app/presentation/pages/auth_page/auth_screen.dart';
-import 'package:flutter_chat_app/presentation/widgets/loading_indicator.dart';
+import 'package:flutter_chat_app/presentation/pages/contacts_page/contact_screen.dart';
 
 class App extends StatelessWidget {
   const App({Key key}) : super(key: key);
@@ -14,13 +14,11 @@ class App extends StatelessWidget {
         primaryColor: Colors.green,
         accentColor: Colors.orange,
       ),
-      home: FutureBuilder(
-        future: Firebase.initializeApp(),
+      home: StreamBuilder(
+        stream: AuthService.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return LoadingIndicator();
-          }
-          return AuthScreen();
+          final isAuthenticated = snapshot.hasData;
+          return isAuthenticated ? ContactScreen() : AuthScreen();
         },
       ),
     );

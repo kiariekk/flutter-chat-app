@@ -32,4 +32,12 @@ class AuthService {
       password: password,
     );
   }
+
+  static Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+  }
+
+  static Stream<User> authStateChanges() {
+    return FirebaseAuth.instance.authStateChanges();
+  }
 }
