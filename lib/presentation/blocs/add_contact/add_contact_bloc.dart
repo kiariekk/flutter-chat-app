@@ -11,7 +11,9 @@ part 'add_contact_event.dart';
 part 'add_contact_state.dart';
 
 class AddContactBloc extends Bloc<AddContactEvent, AddContactState> {
-  AddContactBloc() : super(AddContactInitial());
+  final DatabaseService databaseService;
+
+  AddContactBloc(this.databaseService) : super(AddContactInitial());
 
   @override
   Stream<AddContactState> mapEventToState(
@@ -20,7 +22,7 @@ class AddContactBloc extends Bloc<AddContactEvent, AddContactState> {
     if (event is AddContactAddEvent) {
       yield AddContactLoading();
       try {
-        await DatabaseService.addContact(event.params);
+        await databaseService.addChat(event.params);
         yield AddContactFinished();
       } on AddContactException catch (error) {
         yield AddContactError(error.message);

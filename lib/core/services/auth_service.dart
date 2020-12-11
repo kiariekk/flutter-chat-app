@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_chat_app/core/di/getIt.dart';
 import 'package:flutter_chat_app/core/services/database_service.dart';
 
 class AuthService {
@@ -18,7 +19,7 @@ class AuthService {
       email: email,
       password: password,
     );
-    await DatabaseService.addUser(
+    await getIt<DatabaseService>().addUser(
       username: username,
       email: email,
       uid: credentials.user.uid,

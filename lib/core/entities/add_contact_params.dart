@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 
 class AddContactParams {
-  final String name;
+  final String username;
   final String email;
 
   const AddContactParams({
-    @required this.name,
+    @required this.username,
     @required this.email,
   });
 }

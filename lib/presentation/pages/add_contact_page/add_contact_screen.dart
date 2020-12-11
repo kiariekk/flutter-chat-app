@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_app/core/di/getIt.dart';
 import 'package:flutter_chat_app/core/entities/add_contact_params.dart';
 import 'package:flutter_chat_app/presentation/blocs/add_contact/add_contact_bloc.dart';
 import 'package:flutter_chat_app/presentation/themes/app_colors.dart';
@@ -27,7 +28,7 @@ class _AddContactState extends State<AddContact> {
         title: Text('Add contact'),
       ),
       body: BlocProvider(
-        create: (context) => AddContactBloc(),
+        create: (context) => getIt<AddContactBloc>(),
         child: BlocBuilder<AddContactBloc, AddContactState>(
           builder: (context, state) {
             if (state is AddContactFinished) {
@@ -85,7 +86,7 @@ class _AddContactState extends State<AddContact> {
     form.save();
     BlocProvider.of<AddContactBloc>(context, listen: false).add(
       AddContactAddEvent(AddContactParams(
-        name: _name,
+        username: _name,
         email: _email,
       )),
     );

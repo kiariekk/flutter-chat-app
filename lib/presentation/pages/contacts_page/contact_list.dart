@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app/core/models/contact_model.dart';
+import 'package:flutter_chat_app/core/di/getIt.dart';
+import 'package:flutter_chat_app/core/models/chat_model.dart';
 import 'package:flutter_chat_app/core/services/database_service.dart';
 import 'package:flutter_chat_app/plugins/realtime_pagination/realtime_pagination.dart';
 import 'package:flutter_chat_app/presentation/pages/contacts_page/contact_tile.dart';
@@ -12,19 +13,19 @@ class ContactList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final database = getIt<DatabaseService>();
     return ScrollConfiguration(
       behavior: NoGlowScrollBehavior(),
       child: RealtimePagination(
-        query: DatabaseService.contacts
-            .orderBy("lastMessage.createdAt", descending: true),
+        query: database.allUserChatsQuery,
         itemsPerPage: 12,
         scrollThreshold: 0.8,
         listViewCacheExtent: 3000,
         itemBuilder: (index, context, docSnapshot) {
-          final contact = ContactModel.fromMap(docSnapshot.data());
+          final chat = ChatModel.fromMap(docSnapshot.data());
           return ContactTile(
-            name: contact.name,
-            lastMessageContent: contact.lastMessage.content,
+            name: chat.otherUser.username,
+            lastMessageContent: chat.lastMessage.content,
           );
         },
       ),

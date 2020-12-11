@@ -3,22 +3,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_chat_app/core/mixins/mappeable_model.dart';
 
 class MessageModel implements MappeableModel {
-  final String senderId;
-  final String receiverId;
+  final String senderEmail;
+  final String receiverEmail;
   final String content;
   final Timestamp createdAt;
 
   MessageModel({
-    @required this.senderId,
-    @required this.receiverId,
+    @required this.senderEmail,
+    @required this.receiverEmail,
     @required this.content,
     @required this.createdAt,
   });
 
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
-      receiverId: map["receiverId"],
-      senderId: map["senderId"],
+      receiverEmail: map["receiverEmail"],
+      senderEmail: map["senderEmail"],
       content: map["content"] ?? "",
       createdAt: map["createdAt"],
     );
@@ -27,8 +27,8 @@ class MessageModel implements MappeableModel {
   @override
   Map<String, dynamic> toMap() {
     return {
-      "senderId": senderId,
-      "receiverId": receiverId,
+      "senderEmail": senderEmail,
+      "receiverEmail": receiverEmail,
       "content": content,
       "createdAt": createdAt,
     };
