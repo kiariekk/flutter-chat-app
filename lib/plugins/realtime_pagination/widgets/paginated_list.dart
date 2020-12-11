@@ -8,6 +8,8 @@ class PaginatedList extends StatelessWidget {
   final ItemBuilderDelegate separatedItemBuilder;
   final bool isLoadingMore;
   final Widget bottomLoader;
+  final Axis scrollDirection;
+  final bool reverse;
   final ScrollController scrollController;
   final double cacheExtent;
 
@@ -20,6 +22,8 @@ class PaginatedList extends StatelessWidget {
     @required this.scrollController,
     @required this.cacheExtent,
     @required this.separatedItemBuilder,
+    @required this.scrollDirection,
+    @required this.reverse,
   }) : super(key: key);
 
   @override
@@ -28,8 +32,10 @@ class PaginatedList extends StatelessWidget {
     final itemCount = docs.length + bias;
     if (separatedItemBuilder != null) {
       return ListView.separated(
+        scrollDirection: scrollDirection,
         cacheExtent: cacheExtent,
         controller: scrollController,
+        reverse: reverse,
         itemCount: itemCount,
         itemBuilder: _itemBuilder,
         separatorBuilder: (context, index) {
@@ -45,6 +51,8 @@ class PaginatedList extends StatelessWidget {
       cacheExtent: cacheExtent,
       controller: scrollController,
       itemCount: itemCount,
+      reverse: reverse,
+      scrollDirection: scrollDirection,
       itemBuilder: _itemBuilder,
     );
   }

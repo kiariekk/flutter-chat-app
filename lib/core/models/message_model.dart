@@ -24,6 +24,19 @@ class MessageModel implements MappeableModel {
     );
   }
 
+  factory MessageModel.now({
+    @required String senderEmail,
+    @required String receiverEmail,
+    @required String content,
+  }) {
+    return MessageModel(
+      senderEmail: senderEmail,
+      receiverEmail: receiverEmail,
+      content: content,
+      createdAt: Timestamp.now(),
+    );
+  }
+
   @override
   Map<String, dynamic> toMap() {
     return {

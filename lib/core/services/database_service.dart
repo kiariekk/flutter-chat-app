@@ -1,25 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_chat_app/core/di/getIt.dart';
 import 'package:flutter_chat_app/core/entities/add_contact_params.dart';
 import 'package:flutter_chat_app/core/exceptions/add_contact_exception.dart';
 import 'package:flutter_chat_app/core/models/chat_model.dart';
+import 'package:flutter_chat_app/core/models/message_model.dart';
 import 'package:flutter_chat_app/core/models/user_model.dart';
 import 'package:flutter_chat_app/core/services/auth_service.dart';
+import 'package:flutter_chat_app/core/services/database_queries.dart';
 
 class DatabaseService {
-  final _firestore = FirebaseFirestore.instance;
+  DatabaseService.singleton();
 
-  CollectionReference get _users => _firestore.collection('users');
-
-  CollectionReference get chats => _firestore.collection('chats');
+  DatabaseQueries get _queries => getIt<DatabaseQueries>();
 
   Future<void> initialize() async {
-    await _setCurrentUserModel();
+    await updateCurrentUserModel();
   }
 
-  Future<void> _setCurrentUserModel() async {
+  Future<void> updateCurrentUserModel() async {
     final currentUser = AuthService.currentUser;
-    final snapshot = await _users.doc(currentUser.uid).get();
+    final snapshot = await _queries.users.doc(currentUser.uid).get();
     _cachedUserModel = UserModel.fromMap(snapshot.data());
   }
 
@@ -32,11 +33,11 @@ class DatabaseService {
     @required uid,
   }) async {
     final user = UserModel(email: email, username: username);
-    await _users.doc(uid).set(user.toMap());
+    await _queries.users.doc(uid).set(user.toMap());
   }
 
   Future<void> addChat(AddContactParams params) async {
-    final userWithEmail = await findUserWithEmail(params.email);
+    final userWithEmail = await _findUserWithEmail(params.email);
     if (userWithEmail == null) {
       throw AddContactException(
         "User with email ${params.email} not exists",
@@ -56,21 +57,28 @@ class DatabaseService {
         email: params.email,
       ),
     );
-    await chats.add(chat.toMap());
+    await _queries.chats.add(chat.toMap());
   }
 
-  Future<UserModel> findUserWithEmail(String email) async {
-    final _querySnapshot = await _users.where('email', isEqualTo: email).get();
+  Future<UserModel> _findUserWithEmail(String email) async {
+    final _querySnapshot =
+        await _queries.users.where('email', isEqualTo: email).get();
     if (_querySnapshot.size > 0) {
       return UserModel.fromMap(_querySnapshot.docs[0].data());
     }
     return null;
   }
 
-  Query get allUserChatsQuery {
-    return chats.where('users', arrayContains: {
-      "username": currentUserModel.username,
-      "email": currentUserModel.email,
-    }).orderBy("lastMessage.createdAt", descending: true);
+  Future<void> sendMessage({
+    @required String content,
+    @required String receiverEmail,
+    @required DocumentReference chatReference,
+  }) async {
+    final messageModel = MessageModel.now(
+      senderEmail: currentUserModel.email,
+      receiverEmail: receiverEmail,
+      content: content,
+    );
+    await chatReference.collection('messages').add(messageModel.toMap());
   }
 }

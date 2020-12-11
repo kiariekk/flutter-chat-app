@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_chat_app/plugins/realtime_pagination/cubits/realtime_pagination_cubit.dart';
 import 'package:flutter_chat_app/plugins/realtime_pagination/widgets/default_bottom_loader.dart';
+import 'package:flutter_chat_app/plugins/realtime_pagination/widgets/default_empty_display.dart';
 import 'package:flutter_chat_app/plugins/realtime_pagination/widgets/default_initial_loading.dart';
 import 'package:flutter_chat_app/plugins/realtime_pagination/widgets/paginated_list.dart';
 
@@ -19,8 +21,10 @@ class RealtimePagination extends StatefulWidget {
   final Widget emptyDisplay;
   final Widget bottomLoader;
   final ItemBuilderDelegate itemBuilder;
+  final Axis scrollDirection;
   final ItemBuilderDelegate separatedBuilder;
   final double scrollThreshold;
+  final bool reverse;
 
   const RealtimePagination({
     Key key,
@@ -33,6 +37,8 @@ class RealtimePagination extends StatefulWidget {
     this.listViewCacheExtent,
     this.bottomLoader,
     this.separatedBuilder,
+    this.scrollDirection = Axis.vertical,
+    this.reverse = false,
   }) : super(key: key);
 
   @override
@@ -63,7 +69,6 @@ class _RealtimePaginationState extends State<RealtimePagination> {
   }
 
   void _triggerMoreData() {
-    print('trigger more data');
     _realtimePaginationCubit.loadMoreData();
   }
 
@@ -74,10 +79,13 @@ class _RealtimePaginationState extends State<RealtimePagination> {
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.waiting) {
           final state = snapshot.data;
-          if (state.isLoadingMore) {
-            print('isLoadingMore');
+          if (state.docs.length == 0) {
+            return widget.emptyDisplay ?? DefaultEmptyDisplay();
           }
+
           return PaginatedList(
+            reverse: widget.reverse,
+            scrollDirection: widget.scrollDirection,
             itemBuilder: widget.itemBuilder,
             scrollController: _scrollController,
             separatedItemBuilder: widget.separatedBuilder,

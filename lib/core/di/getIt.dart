@@ -1,3 +1,4 @@
+import 'package:flutter_chat_app/core/services/database_queries.dart';
 import 'package:flutter_chat_app/core/services/database_service.dart';
 import 'package:flutter_chat_app/presentation/blocs/add_contact/add_contact_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -8,7 +9,8 @@ class GetItUtils {
   const GetItUtils._();
 
   static Future<void> setup() async {
-    getIt.registerSingleton<DatabaseService>(DatabaseService());
+    getIt.registerSingleton<DatabaseService>(DatabaseService.singleton());
+    getIt.registerSingleton<DatabaseQueries>(DatabaseQueries.singleton());
     getIt.registerFactory<AddContactBloc>(
       () => AddContactBloc(getIt<DatabaseService>()),
     );
