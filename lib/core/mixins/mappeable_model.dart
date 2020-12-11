@@ -1,3 +1,3 @@
-mixin JsonModel {
+mixin MappeableModel {
   Map<String, dynamic> toMap();
 }

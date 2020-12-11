@@ -1,23 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_chat_app/core/mixins/json_model.dart';
+import 'package:flutter_chat_app/core/mixins/mappeable_model.dart';
 
-class Contact implements JsonModel {
+class ContactModel implements MappeableModel {
   final String name;
   final String email;
   final LastMessage lastMessage;
 
-  const Contact({
+  const ContactModel({
     @required this.name,
     @required this.email,
     @required this.lastMessage,
   });
 
-  factory Contact.fromMap(Map<String, dynamic> map) {
-    return Contact(
+  factory ContactModel.fromMap(Map<String, dynamic> map) {
+    return ContactModel(
       email: map["email"] ?? "",
       name: map["name"] ?? "",
       lastMessage: LastMessage.fromMap(map["lastMessage"]),
+    );
+  }
+
+  factory ContactModel.blank({
+    @required name,
+    @required email,
+  }) {
+    return ContactModel(
+      name: name,
+      email: email,
+      lastMessage: LastMessage.blank(),
     );
   }
 
@@ -31,7 +42,7 @@ class Contact implements JsonModel {
   }
 }
 
-class LastMessage implements JsonModel {
+class LastMessage implements MappeableModel {
   final String content;
   final Timestamp createdAt;
 
@@ -44,6 +55,13 @@ class LastMessage implements JsonModel {
     return LastMessage(
       content: map["content"],
       createdAt: map["createdAt"],
+    );
+  }
+
+  factory LastMessage.blank() {
+    return LastMessage(
+      content: '',
+      createdAt: Timestamp.now(),
     );
   }
 

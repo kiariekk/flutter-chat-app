@@ -1,0 +1,101 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/plugins/realtime_pagination/cubits/realtime_pagination_cubit.dart';
+import 'package:flutter_chat_app/plugins/realtime_pagination/widgets/default_bottom_loader.dart';
+import 'package:flutter_chat_app/plugins/realtime_pagination/widgets/default_initial_loading.dart';
+import 'package:flutter_chat_app/plugins/realtime_pagination/widgets/paginated_list.dart';
+
+typedef Widget ItemBuilderDelegate(
+  int index,
+  BuildContext context,
+  DocumentSnapshot docSnapshot,
+);
+
+class RealtimePagination extends StatefulWidget {
+  final int itemsPerPage;
+  final Query query;
+  final double listViewCacheExtent;
+  final Widget initialLoading;
+  final Widget emptyDisplay;
+  final Widget bottomLoader;
+  final ItemBuilderDelegate itemBuilder;
+  final ItemBuilderDelegate separatedBuilder;
+  final double scrollThreshold;
+
+  const RealtimePagination({
+    Key key,
+    @required this.query,
+    @required this.itemsPerPage,
+    @required this.itemBuilder,
+    this.scrollThreshold = 0.85,
+    this.initialLoading,
+    this.emptyDisplay,
+    this.listViewCacheExtent,
+    this.bottomLoader,
+    this.separatedBuilder,
+  }) : super(key: key);
+
+  @override
+  _RealtimePaginationState createState() => _RealtimePaginationState();
+}
+
+class _RealtimePaginationState extends State<RealtimePagination> {
+  final _scrollController = ScrollController();
+
+  RealtimePaginationCubit _realtimePaginationCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+    _realtimePaginationCubit = RealtimePaginationCubit(
+      limit: widget.itemsPerPage,
+      query: widget.query,
+    );
+  }
+
+  void _scrollListener() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final calculatedThreshold = widget.scrollThreshold * maxScroll;
+    if (_scrollController.position.pixels >= calculatedThreshold) {
+      _triggerMoreData();
+    }
+  }
+
+  void _triggerMoreData() {
+    print('trigger more data');
+    _realtimePaginationCubit.loadMoreData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<RealtimePaginationState>(
+      stream: _realtimePaginationCubit,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.waiting) {
+          final state = snapshot.data;
+          if (state.isLoadingMore) {
+            print('isLoadingMore');
+          }
+          return PaginatedList(
+            itemBuilder: widget.itemBuilder,
+            scrollController: _scrollController,
+            separatedItemBuilder: widget.separatedBuilder,
+            docs: state.docs,
+            cacheExtent: widget.listViewCacheExtent,
+            isLoadingMore: state.isLoadingMore,
+            bottomLoader: widget.bottomLoader ?? DefaultBottomLoader(),
+          );
+        }
+        return widget.initialLoading ?? DefaultInitialLoading();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _realtimePaginationCubit.close();
+    super.dispose();
+  }
+}

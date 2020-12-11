@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_chat_app/core/mixins/json_model.dart';
+import 'package:flutter_chat_app/core/mixins/mappeable_model.dart';
 
-class User implements JsonModel {
+class UserModel implements MappeableModel {
   final String username;
   final String email;
 
-  const User({
+  const UserModel({
     @required this.username,
     @required this.email,
   });
 
-  factory User.fromMap(Map<String, dynamic> data) {
-    return User(
+  factory UserModel.fromMap(Map<String, dynamic> data) {
+    return UserModel(
       email: data['email'],
       username: data['username'],
     );

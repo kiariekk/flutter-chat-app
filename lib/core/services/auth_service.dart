@@ -7,6 +7,8 @@ class AuthService {
 
   static final _firebaseAuth = FirebaseAuth.instance;
 
+  static User get currentUser => _firebaseAuth.currentUser;
+
   static Future<void> signUp({
     @required String password,
     @required String username,

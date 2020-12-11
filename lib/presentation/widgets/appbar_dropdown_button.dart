@@ -23,8 +23,17 @@ class AppbarDropdownButton extends StatelessWidget {
             value: "Logout",
             child: Row(
               children: [
-                Icon(Icons.logout),
-                Text('Logout'),
+                Icon(
+                  Icons.logout,
+                  color: Theme.of(context).primaryColor,
+                ),
+                SizedBox(width: 10),
+                Text(
+                  'Logout',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
               ],
             ),
             onTap: () => AuthService.signOut(),
