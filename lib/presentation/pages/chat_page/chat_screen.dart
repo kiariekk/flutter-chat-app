@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/core/di/getIt.dart';
 import 'package:flutter_chat_app/core/entities/chat_route_params.dart';
+import 'package:flutter_chat_app/core/entities/send_location_params.dart';
+import 'package:flutter_chat_app/core/usecases/send_location.dart';
 import 'package:flutter_chat_app/presentation/pages/chat_page/chat_messages.dart';
 import 'package:flutter_chat_app/presentation/pages/chat_page/type_field.dart';
-import 'package:flutter_chat_app/presentation/widgets/appbar_dropdown_button.dart';
+import 'package:flutter_chat_app/presentation/widgets/app_bar_dropdown_button.dart';
+import 'package:flutter_chat_app/presentation/widgets/appbar_dropdown_menu_item.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -18,7 +22,22 @@ class ChatScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(chatParams.username),
           actions: [
-            AppbarDropdownButton(),
+            AppBarDropdownButton(
+              additionalItems: [
+                AppBarDropdownMenuItem(
+                  icon: Icon(
+                    Icons.location_on,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  onPressed: () => _sendLocationButtonHandle(chatParams),
+                  title: Text(
+                    'Send location',
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  value: 'Send location',
+                ),
+              ],
+            ),
           ],
         ),
         body: Column(
@@ -33,5 +52,13 @@ class ChatScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _sendLocationButtonHandle(ChatRouteParams chatParams) {
+    final sendLocation = getIt<SendLocation>();
+    sendLocation.call(SendLocationParams(
+      chatDoc: chatParams.chatDoc,
+      receiverEmail: chatParams.email,
+    ));
   }
 }

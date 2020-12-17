@@ -13,11 +13,11 @@ class ContactList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final database = getIt<DatabaseQueries>();
+    final queries = getIt<DatabaseQueries>();
     return ScrollConfiguration(
       behavior: NoGlowScrollBehavior(),
       child: RealtimePagination(
-        query: database.allChatsOfCurrentUser,
+        query: queries.allChatsOfCurrentUser,
         itemsPerPage: 12,
         scrollThreshold: 0.8,
         listViewCacheExtent: 3000,

@@ -85,9 +85,9 @@ class _ChatTypeFieldState extends State<ChatTypeField> {
     if (typedValue.isEmpty) return;
     _textController.clear();
     final database = getIt<DatabaseService>();
-    await database.sendMessage(
+    await database.sendTextMessage(
       content: typedValue,
-      chatReference: chatParams.chatDoc,
+      chat: chatParams.chatDoc,
       receiverEmail: chatParams.email,
     );
   }

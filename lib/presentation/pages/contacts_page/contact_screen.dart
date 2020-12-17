@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app/presentation/widgets/appbar_dropdown_button.dart';
+import 'package:flutter_chat_app/presentation/widgets/app_bar_dropdown_button.dart';
 import 'package:flutter_chat_app/presentation/pages/contacts_page/contact_list.dart';
 import 'package:flutter_chat_app/presentation/themes/app_colors.dart';
 
@@ -13,7 +13,7 @@ class ContactScreen extends StatelessWidget {
         title: Text('Contacts'),
         titleSpacing: 30,
         actions: [
-          AppbarDropdownButton(),
+          AppBarDropdownButton(),
         ],
       ),
       body: ContactList(),

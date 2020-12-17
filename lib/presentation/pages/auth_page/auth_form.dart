@@ -108,7 +108,7 @@ class _AuthFormState extends State<AuthForm> {
             email: _email,
             password: _password,
           );
-    _setLoading(false);
+    // _setLoading(false);
   }
 
   void _setLoading(bool value) {

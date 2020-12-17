@@ -1,5 +1,7 @@
 import 'package:flutter_chat_app/core/services/database_queries.dart';
 import 'package:flutter_chat_app/core/services/database_service.dart';
+import 'package:flutter_chat_app/core/services/location_service.dart';
+import 'package:flutter_chat_app/core/usecases/send_location.dart';
 import 'package:flutter_chat_app/presentation/blocs/add_contact/add_contact_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -11,8 +13,20 @@ class GetItUtils {
   static Future<void> setup() async {
     getIt.registerSingleton<DatabaseService>(DatabaseService.singleton());
     getIt.registerSingleton<DatabaseQueries>(DatabaseQueries.singleton());
+    getIt.registerSingleton<LocationService>(LocationService.singleton());
     getIt.registerFactory<AddContactBloc>(
       () => AddContactBloc(getIt<DatabaseService>()),
     );
+    getIt.registerSingleton<SendLocation>(SendLocation.singleton(
+      locationService: getIt<LocationService>(),
+      databaseService: getIt<DatabaseService>(),
+    ));
+  }
+
+  static Future<void> initialize() async {
+    await Future.wait([
+      getIt<DatabaseService>().initialize(),
+      getIt<LocationService>().initialize(),
+    ]);
   }
 }

@@ -50,3 +50,6 @@ google-services.json
 
 # Firebase
 data_modeling.ts
+
+# Node
+node_modules

@@ -24,4 +24,9 @@ class UserModel implements MappeableModel {
       "email": email,
     };
   }
+
+  @override
+  String toString() {
+    return '$username - $email';
+  }
 }
