@@ -18,7 +18,7 @@ class LocationMessageModel extends MessageModel {
 
   factory LocationMessageModel.fromMap(Map<String, dynamic> map) {
     return LocationMessageModel(
-      coords: map["coords"],
+      coords: map["coords"].map<double>((coord) => coord as double).toList(),
       createdAt: map["createdAt"],
       senderEmail: map["senderEmail"],
       receiverEmail: map["receiverEmail"],
@@ -27,6 +27,6 @@ class LocationMessageModel extends MessageModel {
 
   @override
   Map<String, dynamic> toMap() {
-    return super.toMap()..putIfAbsent('coordinates', () => coords);
+    return super.toMap()..putIfAbsent('coords', () => coords);
   }
 }

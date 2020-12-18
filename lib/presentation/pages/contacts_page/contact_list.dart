@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:realtime_pagination/realtime_pagination.dart';
+
 import 'package:flutter_chat_app/core/di/getIt.dart';
 import 'package:flutter_chat_app/core/models/chat_model.dart';
 import 'package:flutter_chat_app/core/services/database_queries.dart';
-import 'package:flutter_chat_app/plugins/realtime_pagination/realtime_pagination.dart';
 import 'package:flutter_chat_app/presentation/pages/contacts_page/contact_tile.dart';
 import 'package:flutter_chat_app/presentation/widgets/no_glow_scroll_behavior.dart';
 

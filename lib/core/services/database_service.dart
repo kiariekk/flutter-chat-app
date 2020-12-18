@@ -4,6 +4,7 @@ import 'package:flutter_chat_app/core/di/getIt.dart';
 import 'package:flutter_chat_app/core/entities/add_contact_params.dart';
 import 'package:flutter_chat_app/core/exceptions/add_contact_exception.dart';
 import 'package:flutter_chat_app/core/models/chat_model.dart';
+import 'package:flutter_chat_app/core/models/location_message_model.dart';
 import 'package:flutter_chat_app/core/models/message_model.dart';
 import 'package:flutter_chat_app/core/models/text_message_model.dart';
 import 'package:flutter_chat_app/core/models/user_model.dart';
@@ -88,7 +89,13 @@ class DatabaseService {
     @required String receiverEmail,
     @required DocumentReference chat,
   }) async {
-    // await _sendMessage(chat: chat, message: message);
+    final message = LocationMessageModel(
+      coords: coords,
+      createdAt: Timestamp.now(),
+      receiverEmail: receiverEmail,
+      senderEmail: currentUserModel.email,
+    );
+    await _sendMessage(chat: chat, message: message);
   }
 
   Future<void> _sendMessage({

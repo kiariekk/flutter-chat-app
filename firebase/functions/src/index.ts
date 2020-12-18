@@ -13,7 +13,9 @@ export const updateLastMessage = functions.firestore
       .doc(`chats/${chatId}`)
       .update({
         lastMessage: {
-          content: newMessageData.content,
+          content:
+            newMessageData.content ||
+            `${newMessageData.senderEmail} shared a location`,
           createdAt: newMessageData.createdAt,
         },
       });

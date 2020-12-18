@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:realtime_pagination/realtime_pagination.dart';
+
 import 'package:flutter_chat_app/core/di/getIt.dart';
+import 'package:flutter_chat_app/core/models/message_model.dart';
+import 'package:flutter_chat_app/core/services/auth_service.dart';
+import 'package:flutter_chat_app/core/models/text_message_model.dart';
+import 'package:flutter_chat_app/core/services/database_queries.dart';
 import 'package:flutter_chat_app/core/entities/chat_route_params.dart';
 import 'package:flutter_chat_app/core/models/location_message_model.dart';
-import 'package:flutter_chat_app/core/models/message_model.dart';
-import 'package:flutter_chat_app/core/models/text_message_model.dart';
-import 'package:flutter_chat_app/core/services/auth_service.dart';
-import 'package:flutter_chat_app/core/services/database_queries.dart';
-import 'package:flutter_chat_app/plugins/realtime_pagination/realtime_pagination.dart';
-import 'package:flutter_chat_app/presentation/pages/chat_page/location_message.dart';
 import 'package:flutter_chat_app/presentation/pages/chat_page/text_message.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_chat_app/presentation/pages/chat_page/location_message.dart';
 
 class ChatMessages extends StatelessWidget {
   const ChatMessages({

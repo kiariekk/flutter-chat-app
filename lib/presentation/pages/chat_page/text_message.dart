@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/presentation/pages/chat_page/message.dart';
 
 class TextMessage extends StatelessWidget {
   final bool sendByCurrentUser;
@@ -12,26 +13,12 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: sendByCurrentUser ? 5 : 20,
-      ),
-      child: Align(
-        alignment:
-            sendByCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 5),
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-          decoration: BoxDecoration(
-            color: sendByCurrentUser ? Colors.green[500] : Colors.green[700],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            content,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
+    return Message(
+      sendByCurrentUser: sendByCurrentUser,
+      child: Text(
+        content,
+        style: TextStyle(
+          color: Colors.white,
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/presentation/pages/chat_page/message.dart';
 
 class LocationMessage extends StatelessWidget {
   final List<double> coords;
@@ -12,6 +13,9 @@ class LocationMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Message(
+      sendByCurrentUser: sendByCurrentUser,
+      child: Text(coords.toString()),
+    );
   }
 }
