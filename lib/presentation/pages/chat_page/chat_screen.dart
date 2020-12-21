@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/core/di/getIt.dart';
 import 'package:flutter_chat_app/core/entities/chat_route_params.dart';
 import 'package:flutter_chat_app/core/entities/send_location_params.dart';
-import 'package:flutter_chat_app/core/usecases/send_location.dart';
+import 'package:flutter_chat_app/core/usecases/send_location_message.dart';
 import 'package:flutter_chat_app/presentation/pages/chat_page/chat_messages.dart';
 import 'package:flutter_chat_app/presentation/pages/chat_page/type_field.dart';
 import 'package:flutter_chat_app/presentation/widgets/app_bar_dropdown_button.dart';

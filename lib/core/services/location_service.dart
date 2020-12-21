@@ -21,6 +21,8 @@ class LocationService {
   PermissionStatus get permissionStatus => _permissionStatus;
   PermissionStatus _permissionStatus;
 
+  Stream<LocationData> get onLocationChanged => _location.onLocationChanged;
+
   Future<void> requestToEnable() async {
     _isEnabled = await _location.requestService();
   }

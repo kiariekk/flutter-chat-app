@@ -42,6 +42,7 @@ class ChatMessages extends StatelessWidget {
           if (message is LocationMessageModel) {
             return LocationMessage(
               coords: message.coords,
+              documentRef: docSnapshot.reference,
               sendByCurrentUser: sendByCurrentUser,
             );
           }

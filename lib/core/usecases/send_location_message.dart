@@ -3,6 +3,7 @@ import 'package:flutter_chat_app/core/entities/send_location_params.dart';
 import 'package:flutter_chat_app/core/services/database_service.dart';
 import 'package:flutter_chat_app/core/services/location_service.dart';
 import 'package:flutter_chat_app/core/usecases/usecase.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SendLocation extends Usecase<SendLocationParams, void> {
   final LocationService locationService;
@@ -17,9 +18,8 @@ class SendLocation extends Usecase<SendLocationParams, void> {
   Future<void> call(SendLocationParams params) async {
     if (!await _hasPermissionsAfterRequestingIfNeeded()) return;
     final locationData = await locationService.getLocation();
-    print('coords: ${[locationData.latitude, locationData.longitude]}');
     await databaseService.sendLocationMessage(
-      coords: [locationData.latitude, locationData.longitude],
+      coords: LatLng(locationData.latitude, locationData.longitude),
       receiverEmail: params.receiverEmail,
       chat: params.chatDoc,
     );

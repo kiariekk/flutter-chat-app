@@ -1,7 +1,8 @@
 import 'package:flutter_chat_app/core/services/database_queries.dart';
 import 'package:flutter_chat_app/core/services/database_service.dart';
 import 'package:flutter_chat_app/core/services/location_service.dart';
-import 'package:flutter_chat_app/core/usecases/send_location.dart';
+import 'package:flutter_chat_app/core/usecases/send_location_message.dart';
+import 'package:flutter_chat_app/core/usecases/stream_location.dart';
 import 'package:flutter_chat_app/presentation/blocs/add_contact/add_contact_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -21,6 +22,12 @@ class GetItUtils {
       locationService: getIt<LocationService>(),
       databaseService: getIt<DatabaseService>(),
     ));
+    getIt.registerFactory<StreamLocation>(
+      () => StreamLocation(
+        databaseService: getIt<DatabaseService>(),
+        locationService: getIt<LocationService>(),
+      ),
+    );
   }
 
   static Future<void> initialize() async {

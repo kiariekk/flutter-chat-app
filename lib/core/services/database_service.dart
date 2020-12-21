@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_chat_app/core/di/getIt.dart';
 import 'package:flutter_chat_app/core/entities/add_contact_params.dart';
+import 'package:flutter_chat_app/core/entities/stream_location_params.dart';
 import 'package:flutter_chat_app/core/exceptions/add_contact_exception.dart';
 import 'package:flutter_chat_app/core/models/chat_model.dart';
 import 'package:flutter_chat_app/core/models/location_message_model.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_chat_app/core/models/text_message_model.dart';
 import 'package:flutter_chat_app/core/models/user_model.dart';
 import 'package:flutter_chat_app/core/services/auth_service.dart';
 import 'package:flutter_chat_app/core/services/database_queries.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DatabaseService {
   DatabaseService.singleton();
@@ -85,7 +87,7 @@ class DatabaseService {
   }
 
   Future<void> sendLocationMessage({
-    @required List<double> coords,
+    @required LatLng coords,
     @required String receiverEmail,
     @required DocumentReference chat,
   }) async {
@@ -96,6 +98,15 @@ class DatabaseService {
       senderEmail: currentUserModel.email,
     );
     await _sendMessage(chat: chat, message: message);
+  }
+
+  Future<void> updateLocationMessage({
+    @required documentReference,
+    @required LatLng coords,
+  }) async {
+    await documentReference.update({
+      "coords": [coords.latitude, coords.longitude],
+    });
   }
 
   Future<void> _sendMessage({
