@@ -24,6 +24,7 @@ class DatabaseService {
 
   Future<void> updateCurrentUserModel() async {
     final currentUser = AuthService.currentUser;
+    if (currentUser == null) return;
     final snapshot = await _queries.users.doc(currentUser.uid).get();
     _cachedUserModel = UserModel.fromMap(snapshot.data());
   }
