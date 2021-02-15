@@ -3,9 +3,9 @@
 A whatsapp like chat app made with Flutter and Firebase.
 
 <p align="left">
-  <img width="220" src="./screenshots/auth_screen.jpeg" alt="Auth Screen" hspace="20"/>
-  <img width="220" src="./screenshots/contacts_screen.jpeg" alt="Contacts Screen" hspace="20"/>
-  <img width="220" src="./screenshots/messages_screen.jpeg" alt="Messages Screen" hspace="20"/>
+  <img width="220" src="./screenshots/auth_screen.jpg" alt="Auth Screen" hspace="20"/>
+  <img width="220" src="./screenshots/contacts_screen.jpg" alt="Contacts Screen" hspace="20"/>
+  <img width="220" src="./screenshots/messages_screen.jpg" alt="Messages Screen" hspace="20"/>
 </p>
 
 ## Getting Started
